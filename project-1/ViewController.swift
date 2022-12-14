@@ -13,13 +13,15 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-                title = "Storm Viewer"
-                navigationController?.navigationBar.prefersLargeTitles = true
+        title = "Storm Viewer"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
         
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
         let items = try! fm.contentsOfDirectory(atPath: path)
-//        print(items)
+        //        print(items)
         
         for item in items {
             if item.hasPrefix("nssl") {
@@ -27,7 +29,7 @@ class ViewController: UITableViewController {
             }
         }
         pictures.sort()
-//        print(pictures)
+        //        print(pictures)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -48,6 +50,13 @@ class ViewController: UITableViewController {
             navigationController?.pushViewController(vc, animated: true)
         }
     }
+    @objc func shareTapped() {
+        var array1: [Any] = ["You need this app right now! You can buy it here"]
+        if let link = URL(string: "https://github.com/EvgeniiaZorich/Project-3") {
+            array1.append(link)
+        }
+        let vc = UIActivityViewController(activityItems: array1, applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
+    }
 }
-
-
